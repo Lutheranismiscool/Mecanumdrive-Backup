@@ -4,75 +4,47 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.Drive;
 
-/**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+
   private final Drive drive = new Drive();
 
-  public static XboxController driver = new XboxController(0);
+  // Movement Controls
 
-  // ----------- CONTROLS -----------
-
-  // Left Stick -----------
-  private final int swerveAxisX = XboxController.Axis.kLeftX.value;
-  private final int swerveAxisY = XboxController.Axis.kLeftY.value;
-
-  // Right Stick -----------
-  private final int turnAxis = XboxController.Axis.kRightX.value;
-
-  // Triggers -----------
   private final int leftTrigger = XboxController.Axis.kLeftTrigger.value;
   private final int rightTrigger = XboxController.Axis.kRightTrigger.value;
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+  private final int swerveAxisX = XboxController.Axis.kLeftX.value;
+  private final int swerveAxisY = XboxController.Axis.kRightX.value;
+
+  // Shooter Controls
+
+  private final int RotationAxisX = XboxController.Axis.kRightX.value;
+
+  XboxController driver = new XboxController(0);
+
+  private final JoystickButton shootButton = new JoystickButton(driver, XboxController.Button.kA.value);
+
   public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
+    configureBindings();
     drive.setDefaultCommand(
-      new TeleopDrive(drive,
-      () -> driver.getRawAxis(rightTrigger) - driver.getRawAxis(leftTrigger),
-      () -> driver.getRawAxis(turnAxis)
-      )
-    );
-
+        new TeleopDrive(drive,
+            () -> driver.getRawAxis(rightTrigger) - driver.getRawAxis(leftTrigger),
+            () -> driver.getRawAxis(swerveAxisX),
+            () -> driver.getRawAxis(swerveAxisY)));
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-   * it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-
+  private void configureBindings() {
+    // shootButton.whileTrue();
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
+    return Commands.print("No autonomous command configured");
   }
-
 }

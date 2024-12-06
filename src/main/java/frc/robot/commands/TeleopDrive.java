@@ -4,53 +4,40 @@
 
 package frc.robot.commands;
 
-
-import frc.robot.subsystems.Drive;
-
 import java.util.function.DoubleSupplier;
 
-// import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Drive;
 
-/** An example command that uses an example subsystem. */
 public class TeleopDrive extends Command {
-  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-  private final Drive drive;
-  private DoubleSupplier forwardSup;
-  private DoubleSupplier turnSup;
-  private DoubleSupplier angleSup;
+  Drive drive;
+  DoubleSupplier xSpeedSup;
+  DoubleSupplier ySpeedSup;
+  DoubleSupplier rotationSup;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public TeleopDrive(Drive drive, DoubleSupplier forwardSup, DoubleSupplier turnSup, DoubleSupplier angleSup) {
+  /** Creates a new TeleopDrive. */
+  public TeleopDrive(Drive drive, DoubleSupplier ySpeedSup, DoubleSupplier xSpeedSup, DoubleSupplier rotationSup) {
     this.drive = drive;
-    this.forwardSup = forwardSup;
-    this.turnSup = turnSup;
-    this.angleSup = angleSup;
-    // Use addRequirements() here to declare subsystem dependencies.
+    this.xSpeedSup = xSpeedSup;
+    this.ySpeedSup = ySpeedSup;
+    this.rotationSup = rotationSup;
     addRequirements(drive);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double forwardVal = forwardSup.getAsDouble();
-    double turningVal = turnSup.getAsDouble();
-    double angleVal = angleSup.getAsDouble();
-    SmartDashboard.putNumber("forwardVal", forwardVal);
-    SmartDashboard.putNumber("turnVal", turningVal);
-    SmartDashboard.putNumber("angleVal", angleVal);
-    drive.tankDrive(forwardVal, turningVal);
+    double xSpeedVal = MathUtil.applyDeadband(xSpeedSup.getAsDouble(), 0.1);
+    double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), 0.1);
+    double ySpeedVal = MathUtil.applyDeadband(ySpeedSup.getAsDouble(), 0.1);
+    drive.arcadeDrive(xSpeedVal, ySpeedVal, rotationVal);
   }
 
   // Called once the command ends or is interrupted.
