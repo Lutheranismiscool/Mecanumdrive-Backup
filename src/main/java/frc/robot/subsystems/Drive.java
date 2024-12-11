@@ -1,11 +1,11 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+// import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+// import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+// import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
@@ -40,9 +40,12 @@ public class Drive extends SubsystemBase {
         // Initialize Talon motors
 
         // Bottom Movement
-        WPI_VictorSPX frontLeft = new WPI_VictorSPX(2);
+        WPI_TalonSRX frontLeft = new WPI_TalonSRX(2);
         WPI_VictorSPX rearLeft = new WPI_VictorSPX(1);
-        WPI_TalonSRX frontRight = new WPI_TalonSRX(3);
+        WPI_VictorSPX frontRight = new WPI_VictorSPX(3);
+
+        // WPI_VictorSRX frontRight = new WPI_TalonSRX(3);
+
         WPI_VictorSPX rearRight = new WPI_VictorSPX(4);
 
         // Shooter
@@ -55,8 +58,8 @@ public class Drive extends SubsystemBase {
         // shooterTurn = new Talon(8);
         
         // Invert the right motors to correct direction
-        frontRight.setInverted(true);
-        rearRight.setInverted(true);
+        frontRight.setInverted(false);
+        rearRight.setInverted(false);
         
         // Create motor controller groups
         // leftMotors = new MotorControllerGroup(frontLeft, rearLeft);
